@@ -1,0 +1,21 @@
+{
+  "name": "discord-presence-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-bot presence tracker: watch Discord users online/offline, archive every event to a durable DB, and notify a channel.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "smoke": "node scripts/smoke-db.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "dotenv": "^16.4.5",
+    "ws": "^8.18.0"
+  }
+}

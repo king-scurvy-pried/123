@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: presence-tracker
+    runtime: node
+    plan: free
+    buildCommand: npm install --omit=dev --no-audit --no-fund
+    startCommand: node src/index.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: CONTROL_CHANNEL_IDS
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
+      - key: CONTROL_ALLOWED_USER_IDS
+        sync: false
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: DEBOUNCE_MS
+        value: "60000"
+      - key: MAX_RUNTIME_MS
+        value: "0"
+      - key: LOG_LEVEL
+        value: "info"
