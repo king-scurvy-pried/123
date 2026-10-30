@@ -1,0 +1,44 @@
+name: presence-tracker
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: presence-tracker
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install dependencies
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: run presence tracker
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          CONTROL_CHANNEL_IDS: ${{ secrets.CONTROL_CHANNEL_IDS }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          CONTROL_ALLOWED_USER_IDS: ${{ secrets.CONTROL_ALLOWED_USER_IDS }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+          DEBOUNCE_MS: '60000'
+          PORT: '0'
+          MAX_RUNTIME_MS: '21000000'
+          LOG_LEVEL: 'info'
+        run: node src/index.js
